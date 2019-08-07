@@ -85,6 +85,16 @@ export class CatalogComponent implements OnInit {
       this.ToastrService.error('Must include a file.', 'Posting Error');
       return;
     }
+    if (this.fileToUpload.size > 4400000) {
+      this.ToastrService.error('File must be below 4 Megs', 'Posting Error');
+      return;
+    }
+    if (!(this.fileToUpload.type === 'image/jpeg' ||
+      this.fileToUpload.type === 'image/gif' ||
+      this.fileToUpload.type === 'image/png')) {
+        this.ToastrService.error('File must be of type Jpeg, Gif, or PNG; Webm coming soon', 'Posting Error');
+        return;
+    }
     if (this.postMessage.length > 420) {
       this.ToastrService.error('Message must be less than 420 characters.', 'Posting Error');
       return;
