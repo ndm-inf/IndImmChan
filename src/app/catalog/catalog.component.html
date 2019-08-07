@@ -8,8 +8,14 @@
     <div>{{ postTitle.length }}/80</div>
     Message: <textarea [(ngModel)] = "postMessage" rows="4" style="width:100%"></textarea>
     <div>{{ postMessage.length }}/420</div>
-    <div (click)="post()" class="btn btn-wrapper btn-primary btn-round" style="width:100%">Post</div>
-
+    <div [hidden]="!PostingEnabled">
+        <div (click)="post()" class="btn btn-wrapper btn-default btn-round" style="width:100%">Post</div>
+    </div>
+    <div [hidden]="PostingEnabled">
+        <div class="btn btn-wrapper btn-primary btn-round" style="width:100%">
+            Posting enabled in {{ PostingSecondsLeftCounter }} seconds.
+        </div>
+    </div>
 </div>    
 <div class="text-center" [hidden]="!Posting">
         <h3>Posting...</h3>

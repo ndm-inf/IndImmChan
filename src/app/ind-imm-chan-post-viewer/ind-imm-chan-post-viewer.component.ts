@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser'
+import { ChunkingUtility } from '../chunking-utility';
 
 @Component({
   selector: 'app-ind-imm-chan-post-viewer',
@@ -37,7 +38,22 @@ export class IndImmChanPostViewerComponent implements OnInit {
   Posting = false;
   PostingError = false;
   Sanitizer: DomSanitizer
+  PostingEnabled = true;
+  PostingSecondsLeftCounter = 0;
   
+  public async blockPosting() {
+    this.PostingEnabled = false;
+    this.PostingSecondsLeftCounter = 60;
+    const cu: ChunkingUtility = new ChunkingUtility();
+
+    for(let i = 0; i < 60; i++) {
+      this.PostingSecondsLeftCounter--;
+      await cu.sleep(1000);
+    }
+    this.PostingSecondsLeftCounter = 0;
+    this.PostingEnabled = true;
+  }
+
   constructor(indImmChanPostManagerService: IndImmChanPostManagerService, indImmChanAddressManagerService: IndImmChanAddressManagerService,
     route: ActivatedRoute, router: Router, toastrSrvice: ToastrService, sanitizer: DomSanitizer) {
     this.IndImmChanPostManagerService = indImmChanPostManagerService;
@@ -46,7 +62,9 @@ export class IndImmChanPostViewerComponent implements OnInit {
     this.Router = router;
     this.ToastrService = toastrSrvice;
     this.Sanitizer = sanitizer;
+    this.PostingEnabled = true;
   }
+
 
   public handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -67,12 +85,14 @@ export class IndImmChanPostViewerComponent implements OnInit {
     }
     this.Posting = true;
     try {
+      this.blockPosting();
       await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, this.fileToUpload, this.postBoard, this.parentTx);
       this.PostingError = false;
       this.refresh();
     } catch (error) {
       console.log(error);
       this.PostingError = true;
+      this.PostingEnabled = true;
     }  
     this.Posting = false;
   }

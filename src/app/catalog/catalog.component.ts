@@ -10,6 +10,7 @@ import { IndImmChanThread } from '../ind-imm-chan-thread';
 import { ActivatedRoute } from '@angular/router';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ChunkingUtility } from '../chunking-utility';
 
 @Component({
   selector: 'app-catalog',
@@ -34,7 +35,9 @@ export class CatalogComponent implements OnInit {
   PostLoading = false;
   Posting = false;
   PostingError = false;
-
+  PostingEnabled = true;
+  PostingSecondsLeftCounter = 0;
+  
   constructor(indImmChanPostManagerService: IndImmChanPostManagerService, indImmChanAddressManagerService: IndImmChanAddressManagerService,
     route: ActivatedRoute, router:Router, toasterService: ToastrService) {
     this.Route = route;
@@ -42,6 +45,20 @@ export class CatalogComponent implements OnInit {
     this.AddressManagerService = indImmChanAddressManagerService;
     this.Router = router;
     this.ToastrService = toasterService;
+    }
+  
+
+  public async blockPosting() {
+    this.PostingEnabled = false;
+    this.PostingSecondsLeftCounter = 60;
+    const cu: ChunkingUtility = new ChunkingUtility();
+
+    for(let i = 0; i < 60; i++) {
+      this.PostingSecondsLeftCounter--;
+      await cu.sleep(1000);
+    }
+    this.PostingSecondsLeftCounter = 0;
+    this.PostingEnabled = true;
   }
 
   async refresh() {
@@ -73,7 +90,11 @@ export class CatalogComponent implements OnInit {
       return;
     }
     if (this.postMessage.length === 0) {
-      this.ToastrService.error('Message is empty', 'Posting Error');
+      this.ToastrService.error('Message must not be empty', 'Posting Error');
+      return;
+    }
+    if (this.postTitle.length === 0) {
+      this.ToastrService.error('Title must not be empty', 'Posting Error');
       return;
     }
     if (this.postTitle.length> 80) {
@@ -84,12 +105,14 @@ export class CatalogComponent implements OnInit {
     this.Posting = true;
 
     try {
-       await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, this.fileToUpload, this.postBoard, this.parentTx);
-       this.PostingError = false;
-       this.refresh();
+      this.blockPosting();
+      await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, this.fileToUpload, this.postBoard, this.parentTx);
+      this.PostingError = false;
+      this.refresh();
     } catch (error) {
       console.log(error);
       this.PostingError = true;
+      this.PostingEnabled = true;
     }  
     this.Posting = false;
   }

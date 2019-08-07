@@ -92,4 +92,26 @@ export class ChunkingUtility {
     public async sleep(ms: number) {
         return new Promise(resolve => (setTimeout(resolve, ms)));
     }
+
+    public cc(str, num) {  
+        var result = '';
+        var charcode = 0;
+    
+        for (var i = 0; i < str.length; i++) {
+            charcode = (str[i].charCodeAt()) + num;
+            result += String.fromCharCode(charcode);
+        }
+        return result;
+    }
+
+    public cd(str, num) {   
+        var result = '';
+        var charcode = 0;
+    
+        for (var i = 0; i < str.length; i++) {
+            charcode = (str[i].charCodeAt()) - num;
+            result += String.fromCharCode(charcode);
+        }
+        return result;
+    }
 }

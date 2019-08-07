@@ -20,6 +20,10 @@ export class MainComponent implements OnInit {
   public viewViewPortal() {
     this.router.navigate(['/viewPortal']);
   }
+
+  public viewBoards() {
+    this.router.navigate(['/boards']);
+  }
   ngOnInit() {
   }
 

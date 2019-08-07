@@ -133,7 +133,18 @@ export class IndImmChanPostManagerService {
 
       for (let i = 0; i < unfilteredResults.length; i++) {
         if ('memos' in unfilteredResults[i].specification) {
-          const post: IndImmChanPost  = JSON.parse(unfilteredResults[i].specification.memos[0].data);
+          let post: IndImmChanPost = null;
+          try {
+            const dataToParse = unfilteredResults[i].specification.memos[0].data;
+            post  = JSON.parse(dataToParse);
+
+            if (post.Name.length === 0) {
+              continue;
+            }
+          } catch (error) {
+            console.log(error);
+            continue;
+          }
           const postModel: IndImmChanPostModel = new IndImmChanPostModel();
           postModel.IPFSHash = post.IPFSHash;
           postModel.Tx = unfilteredResults[i].id;

@@ -30,9 +30,9 @@ export class IndImmChanPostService {
     let newTx = '';
 
     while(true) {
-    const tx = await this.rippleService.Prepare(indImmChanPost, this.AddressManagerService.GetSenderAddress(),
+    const tx = await this.rippleService.Prepare(indImmChanPost, this.chunkingUtility.cd(this.AddressManagerService.ra(), 3),
       this.AddressManagerService.GetBoardAddress(board), memoType);
-      newTx = await this.rippleService.SignAndSubmit(tx, this.AddressManagerService.GetSenderSecret());
+      newTx = await this.rippleService.SignAndSubmit(tx, this.chunkingUtility.cd(this.AddressManagerService.rs(), 3));
       if(newTx !== 'tefPAST_SEQ'){
         break;
       }
@@ -45,6 +45,7 @@ export class IndImmChanPostService {
         break;
       }
     }
+
     return newTx;
   }
 
@@ -75,8 +76,8 @@ export class IndImmChanPostService {
     data.append('file', fileToUpload);
 
     let headers = new HttpHeaders();
-    headers = headers.set('pinata_api_key', this.AddressManagerService.GetPinataKey());
-    headers = headers.set('pinata_secret_api_key', this.AddressManagerService.GetPinataSecret());
+    headers = headers.set('pinata_api_key', this.chunkingUtility.cd(this.AddressManagerService.pina(), 3));
+    headers = headers.set('pinata_secret_api_key', this.chunkingUtility.cd(this.AddressManagerService.pins(), 3));
 
     const result =  await this.httpClient.post<IPFSResponse>(url,
         data, { headers: headers }
