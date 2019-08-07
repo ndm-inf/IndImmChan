@@ -7,6 +7,9 @@ import { ViewPortalComponent } from './view-portal/view-portal.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
 import { DevComponent } from './dev/dev.component';
 import { FileIndexComponent } from './file-index/file-index.component';
+import { IndImmChanPostViewerComponent } from './ind-imm-chan-post-viewer/ind-imm-chan-post-viewer.component';
+import { CatalogComponent } from './catalog/catalog.component';
+import { BoardsComponent } from './boards/boards.component';
 
 const routes: Routes = [
    {
@@ -41,6 +44,18 @@ const routes: Routes = [
   {
     path: 'fileIndex',
     component: FileIndexComponent
+  }, 
+  {
+    path: 'postViewer/:board/:id',
+    component: IndImmChanPostViewerComponent
+  }, 
+  {
+    path: 'catalog/:board',
+    component: CatalogComponent
+  },
+  {
+    path: 'boards',
+    component: BoardsComponent
   }
  ];
 

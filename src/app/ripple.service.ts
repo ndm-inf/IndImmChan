@@ -131,7 +131,7 @@ export class RippleService  {
 
   public async IsSenderSecretValid(sender, secret) {
     try {
-      const tx = await this.Prepare('test', sender, this.Config.DestinationAddress());
+      const tx = await this.Prepare('test', sender, this.Config.DestinationAddress(), '');
       await this.SignOnly(tx, secret);
       return true;
     } catch (e) {
@@ -151,7 +151,7 @@ export class RippleService  {
 
     // console.log('Identifying hash:', txID);
     const txBlob = response.signedTransaction;
-    // console.log('Signed blob:', txBlob);
+    console.log('Signed blob:', txBlob);
 
     let submitResultInNoError = false;
 
@@ -221,21 +221,26 @@ export class RippleService  {
     return result;
   }
 
-  public async Prepare(objectToPrepare, sender, destination) {
+  public async Prepare(objectToPrepare, sender, destination, memoType) {
+    
+    if (memoType === '') {
+      memoType = '6e646d2d76302e39'.toUpperCase()
+    }
+    memoType = memoType.toUpperCase();
     const chunkingUtility = new ChunkingUtility();
 
     const postAsHex = chunkingUtility.StringToHex(JSON.stringify(objectToPrepare));
 
     const preparedTx = await this.api.prepareTransaction({
       'TransactionType': 'Payment',
-      'Sequence': this.sequenceNumber,
+      // 'Sequence': this.sequenceNumber,
       'Account': sender,
       'Amount': this.api.xrpToDrops('0.000001'),
       'Memos': [
         {
             'Memo': {
                 'MemoData': postAsHex.toUpperCase(),
-                'MemoType': '6e646d2d76302e39'.toUpperCase()
+                'MemoType': memoType
             }
         }
       ],
@@ -249,9 +254,9 @@ export class RippleService  {
 
     this.sequenceNumber++;
     console.log('Prepared transaction sequence:' + preparedTx.instructions.sequence);
-    // console.log('Prepared transaction instructions:', preparedTx.txJSON);
-    // console.log('Transaction cost:', preparedTx.instructions.fee, 'XRP');
-    // console.log('Transaction expires after ledger:', preparedTx.instructions.maxLedgerVersion);
+    console.log('Prepared transaction instructions:', preparedTx.txJSON);
+    console.log('Transaction cost:', preparedTx.instructions.fee, 'XRP');
+    console.log('Transaction expires after ledger:', preparedTx.instructions.maxLedgerVersion);
     return preparedTx.txJSON;
   }
 }

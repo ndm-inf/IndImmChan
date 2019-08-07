@@ -27,8 +27,8 @@ export class AppComponent {
     this.router.navigate(['/upload']);
   }
 
-  public viewViewPortal() {
-    this.router.navigate(['/viewPortal']);
+  public viewBoards() {
+    this.router.navigate(['/boards']);
   }
 
   public viewSecure() {

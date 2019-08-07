@@ -27,7 +27,7 @@ export class RippleFileService {
   }
 
   public async CreateFileIndexTransaction(rootFileIndex: RootFileIndex, secret, sender) {
-    const tx = await this.rippleService.Prepare(rootFileIndex, sender, this.rippleService.Config.IndexDestinationAddress());
+    const tx = await this.rippleService.Prepare(rootFileIndex, sender, this.rippleService.Config.IndexDestinationAddress(), '');
     const txId = await this.rippleService.SignAndSubmit(tx, secret);
     return txId;
   }
@@ -46,7 +46,7 @@ export class RippleFileService {
       if (i > 0) {
         currentFileDetail.NextTxPointer = prevTxId;
       }
-      const tx = await this.rippleService.Prepare(currentFileDetail, sender, this.rippleService.Config.DestinationAddress());
+      const tx = await this.rippleService.Prepare(currentFileDetail, sender, this.rippleService.Config.DestinationAddress(), '');
       prevTxId = await this.rippleService.SignAndSubmit(tx, secret);
 
       this.fileProgressService.TotalFileDetailChunksUploaded++;
@@ -65,7 +65,7 @@ export class RippleFileService {
   }
 
   public async CreateComment(comment: Comment, secret: string, sender: string, destination: string) {
-    const tx = await this.rippleService.Prepare(comment, sender, destination);
+    const tx = await this.rippleService.Prepare(comment, sender, destination, '');
     const txId = await this.rippleService.SignAndSubmit(tx, secret);
     return txId;
   }
@@ -84,7 +84,7 @@ export class RippleFileService {
       const currentFileMetaDataDetail: FileMetaDataDetail = new FileMetaDataDetail();
       currentFileMetaDataDetail.data = metaDataAsArray[i];
 
-      const tx = await this.rippleService.Prepare(currentFileMetaDataDetail, sender, this.rippleService.Config.DestinationAddress());
+      const tx = await this.rippleService.Prepare(currentFileMetaDataDetail, sender, this.rippleService.Config.DestinationAddress(), '');
       prevTxId = await this.rippleService.SignAndSubmit(tx, secret);
 
       this.fileProgressService.TotalFileMetaDataChunksUploaded++;
@@ -119,7 +119,7 @@ export class RippleFileService {
     rootFile.minLedgerVersion = minLedgerVersion;
     rootFile.cmtPtr = commentTxPointer;
 
-    const tx = await this.rippleService.Prepare(rootFile, sender, this.rippleService.Config.DestinationAddress());
+    const tx = await this.rippleService.Prepare(rootFile, sender, this.rippleService.Config.DestinationAddress(), '');
     const txId = await this.rippleService.SignAndSubmit(tx, secret);
 
     return txId;

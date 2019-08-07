@@ -7,7 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatProgressSpinnerModule, MatRadioModule, MatSliderModule, MatProgressBarModule, MatSlideToggleModule,
   MatFormFieldModule, MatDialogModule, MatInputModule} from '@angular/material';
 import { MatVideoModule } from 'mat-video';
-
+import { HttpClientModule } from '@angular/common/http'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { UploadComponent } from './upload/upload.component';
 import { MainComponent } from './main/main.component';
@@ -19,6 +19,9 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 import { DevComponent } from './dev/dev.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { FileIndexComponent } from './file-index/file-index.component';
+import { IndImmChanPostViewerComponent } from './ind-imm-chan-post-viewer/ind-imm-chan-post-viewer.component';
+import { CatalogComponent } from './catalog/catalog.component';
+import { BoardsComponent } from './boards/boards.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { FileIndexComponent } from './file-index/file-index.component';
     AnonymousComponent,
     DevComponent,
     ConfirmDialogComponent,
-    FileIndexComponent
+    FileIndexComponent,
+    IndImmChanPostViewerComponent,
+    CatalogComponent,
+    BoardsComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +47,8 @@ import { FileIndexComponent } from './file-index/file-index.component';
     ToastrModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    AngularFileViewerModule
+    AngularFileViewerModule,
+    HttpClientModule
   ],
   entryComponents: [ConfirmDialogComponent],
   providers: [],
