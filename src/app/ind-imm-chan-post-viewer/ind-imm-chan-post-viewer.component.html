@@ -47,7 +47,7 @@
                         <img [src]="thread.IndImmChanPostModelParent.Base64Image" [hidden]="!thread.IndImmChanPostModelParent.ShowFullSizeFile">
                     </div>
                     <div class="progress-item-container">
-                        <pre>{{  thread.IndImmChanPostModelParent.Msg }}</pre>
+                        <span [innerHTML]="thread.IndImmChanPostModelParent.Msg"></span>
                     </div>
                 </div>
             </div>

@@ -64,6 +64,10 @@ export class CatalogComponent implements OnInit {
   }
 
   async post() {
+    if (!this.fileToUpload) {
+      this.ToastrService.error('Must include a file.', 'Posting Error');
+      return;
+    }
     if (this.postMessage.length > 420) {
       this.ToastrService.error('Message must be less than 420 characters.', 'Posting Error');
       return;

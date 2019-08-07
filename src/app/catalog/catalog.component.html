@@ -5,8 +5,9 @@
     id="file"
     (change)="handleFileInput($event.target.files)">
     Title: <input type="text'" [(ngModel)] = "postTitle" style="width:100%"><br>
+    <div>{{ postTitle.length }}/80</div>
     Message: <textarea [(ngModel)] = "postMessage" rows="4" style="width:100%"></textarea>
-    
+    <div>{{ postMessage.length }}/420</div>
     <div (click)="post()" class="btn btn-wrapper btn-primary btn-round" style="width:100%">Post</div>
 
 </div>    
