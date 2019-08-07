@@ -174,6 +174,8 @@ export class RippleService  {
         } else if (result === 'tefPAST_SEQ') {
           txID = 'tefPAST_SEQ';
           submitResultInNoError = true; // this is really an error but handling it one tier up, refactor later
+          const cu: ChunkingUtility = new ChunkingUtility();
+          await cu.sleep(1000);
         } else {
           submitResultInNoError = true;
           this.FileProgressService.ShowHighFeeNotification = false;
