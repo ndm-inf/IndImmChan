@@ -59,7 +59,7 @@ export class IndImmChanPostManagerService {
     }
     const minLedger = this.IndImmChanPostService.rippleService.earliestLedgerVersion;
     const max = this.IndImmChanPostService.rippleService.maxLedgerVersion;
-    let imageCounter = 0;
+    let imageCounter = 1;
 
     const unfilteredResults: any[] = await this.IndImmChanPostService.rippleService.api.getTransactions(boardAddress,
       {minLedgerVersion: minLedger, maxLedgerVersion: max});

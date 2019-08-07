@@ -46,7 +46,7 @@
                             <img [src]=" thread.IndImmChanPostModelParent.Base64Image" width="150px">
                         </div>
                         <div class="progress-item-container">
-                            {{  thread.LastCommentTime | date:'medium' }}
+                            Last: {{  thread.LastCommentTime | date:'medium' }}
                         </div>
                         <div (click)="OpenThread(thread.IndImmChanPostModelParent.Tx)" class="btn btn-wrapper btn-default btn-round" style="width:100%">Open</div>
 

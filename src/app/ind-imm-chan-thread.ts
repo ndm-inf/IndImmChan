@@ -7,7 +7,7 @@ export class IndImmChanThread {
         this.IndImmChanPostModelChildren = [];
     }
     TotalReplies = 0;
-    ImageReplies = 0;
+    ImageReplies = 1;
     LastCommentTime: Date = null;
 
     public Prep() {
