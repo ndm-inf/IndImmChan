@@ -147,7 +147,7 @@ export class RippleService  {
 
   public async SignAndSubmit(trx, secret: string) {
     const response = this.api.sign(trx, secret);
-    const txID = response.id;
+    let txID = response.id;
 
     // console.log('Identifying hash:', txID);
     const txBlob = response.signedTransaction;
@@ -171,6 +171,9 @@ export class RippleService  {
           this.FileProgressService.ShowFatalError = true;
           this.api.disconnect();
           throw new Error('Fatal Error');
+        } else if (result === 'tefPAST_SEQ') {
+          txID = 'tefPAST_SEQ';
+          submitResultInNoError = true; // this is really an error but handling it one tier up, refactor later
         } else {
           submitResultInNoError = true;
           this.FileProgressService.ShowHighFeeNotification = false;

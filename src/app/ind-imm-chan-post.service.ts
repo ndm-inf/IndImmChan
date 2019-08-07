@@ -27,10 +27,16 @@ export class IndImmChanPostService {
   }
 
   public async postToRipple(indImmChanPost: IndImmChanPost, board:string, memoType: string): Promise<string> {
+    let newTx = '';
+
+    while(true) {
     const tx = await this.rippleService.Prepare(indImmChanPost, this.AddressManagerService.GetSenderAddress(),
       this.AddressManagerService.GetBoardAddress(board), memoType);
-    const newTx = await this.rippleService.SignAndSubmit(tx, this.AddressManagerService.GetSenderSecret());
-
+      newTx = await this.rippleService.SignAndSubmit(tx, this.AddressManagerService.GetSenderSecret());
+      if(newTx !== 'tefPAST_SEQ'){
+        break;
+      }
+    }
     while (true) {
       await this.chunkingUtility.sleep(4000);
       const isValidAndConfirmed = await this.rippleService.ValidateTransaction(newTx,
