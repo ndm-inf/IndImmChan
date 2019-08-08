@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class AppComponent {
-  title = 'IndImmUI';
+  title = 'BlockChan';
   router: Router;
   toaster: ToastrService;
 
